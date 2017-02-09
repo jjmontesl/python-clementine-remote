@@ -2,8 +2,6 @@ import time
 import socket
 import struct
 from threading import Thread
-import random
-import datetime
 
 import clementineremote.remotecontrolmessages_pb2 as cr
 
@@ -211,7 +209,7 @@ class ClementineRemote():
 
         #print("Incoming message: %s" % msg)
 
-        self.last_update = datetime.datetime.now()
+        self.last_update = time.time()
 
         if msg.type == cr.INFO:
             self.version = msg.response_clementine_info.version
@@ -286,19 +284,13 @@ class ClementineRemote():
 
     def on_message(self, msg):
         """
-        This method is meant to be extended.
+        This method is meant to be extended for users that need to respond
+        to incoming events.
+
+        Note that this will be called from a different thread that the thread from
+        which the ClementineRemote instance was created. This may require client code
+        to synchronize access to shared variables.
         """
         #print(self)
         pass
-
-
-"""
-if __name__ == "__main__":
-    clementine = ClementineRemote()
-    clementine.set_volume(int(random.uniform(60, 90)))
-
-    while True:
-        time.sleep(2.0)
-        #print(clementine)
-"""
 

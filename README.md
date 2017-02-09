@@ -47,25 +47,43 @@ Import the Clementine class:
 
     >>> from clementineremote import ClementineRemote
 
-Create an instance (by default will connect to localhost:5500):
+Create an instance (by default this will connect to localhost:5500):
 
     >>> clementine = ClementineRemote(auth_code=1234)
-    ...
+
+Use the `host` and `port` arguments to specify a particular host:
+
+    >>> clementine = ClementineRemote(host="127.0.0.1", port=5500, auth_code=None)
 
 You can query the player status. Note that some attributes will be None until
 information is received.
 
     >>> clementine.first_data_sent_complete
     True
-    >>> clementine.current_track.title
+    >>> clementine.current_track['title']
     'Born Slippy (Underworld)'
 
-Do not forget to disconnect:
+You can access several song metadata:
+
+    >>> clementine.current_track.keys()
+    dict_keys(['playcount', 'art', 'track', 'title', 'year', 'pretty_length', 'filename', 'length', 'track_artist', 'type', 'track_index', 'is_local', 'track_id', 'rating', 'track_album', 'file_size', 'genre'])
+
+Position is continuously updated (it's reported in seconds):
+
+    >>> clementine.track_position
+    443
+    >>> clementine.track_position
+    444
+
+Do not forget to disconnect. The client creates a thread to handle incoming messages,
+disconnecting terminates the extra thread:
 
     >>> clementine.disconnect()
 
 
-For full reference, please check the source code.
+For full reference, please check the source code:
+
+* https://github.com/jjmontesl/python-clementine-remote/blob/master/clementineremote/clementine.py
 
 
 Usage as command line tool
@@ -101,9 +119,22 @@ After installing, run `clementine-remote --help` for help:
       --version             show program's version number and exit
 
 
+Listening to events
+-------------------
+
+Note that event handling code executes in a different thread from which the client instance
+is initialized. This may require you to synchronize access to your your shared variables.
+
 
 Configuring Clementine to allow remote connections
 --------------------------------------------------
+
+Remember that Clementine must be configured to accept connections through its
+network remote control protocol.
+
+You can configure this through Clementine  `Tools > Preferences > Network remote control`
+configuration menu. Enable `Use network remote control` and configure the other options
+for your use case.
 
 Source
 ======
