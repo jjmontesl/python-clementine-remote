@@ -172,7 +172,7 @@ class ClementineRemote():
         msg.type = cr.PREVIOUS
         self.send_message(msg)
 
-    def volume(self, volume):
+    def set_volume(self, volume):
         """
         Sets player volume (note, this does not change host computer main volume).
         """

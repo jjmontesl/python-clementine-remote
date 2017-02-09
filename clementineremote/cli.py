@@ -92,7 +92,7 @@ def main():
     elif command == "previous":
         clementine.previous()
 
-    elif command == "volume":
+    elif command == "set_volume":
         volume = int(args.command[1])
         clementine.set_volume(volume)
 
