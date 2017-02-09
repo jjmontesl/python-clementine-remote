@@ -1,7 +1,7 @@
 Python Clementine Remote
 ========================
 
-**Python library for the Clementine Music Player remote protocol.**
+**Python library and command line tool for the Clementine Music Player remote protocol.**
 
 It allows you to connect to Clementine through its network protocol
 and control the media player.
@@ -159,7 +159,7 @@ You can get in touch via email or Twitter: @jjmontesl .
 License
 ====================
 
-This library 'python-clementine-remote' is released under ? license.
+This library 'python-clementine-remote' is released under the Apache License, Version 2.0.
 
 For full license see the LICENSE.txt file.
 

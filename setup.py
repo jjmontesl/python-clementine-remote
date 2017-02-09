@@ -10,16 +10,16 @@ import codecs
 
 name = 'python-clementine-remote'
 package = 'clementineremote'
-description = 'Python library for the Clementine Music Player remote protocol.'
+description = 'Python library and CLI for the Clementine Music Player remote protocol.'
 url = 'http://github.com/jjmontesl/python-clementine-remote'
 author = 'Jose Juan Montes'
 author_email = 'jjmontes@gmail.com'
-license = 'GPL v3'
+license = 'Apache Software License, Version 2.0'
 install_requires = ['protobuf']  # 3.2.0
 classifiers = [
     'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
-    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    'License :: OSI Approved :: Apache Software License, Version 2.0',
     'Operating System :: POSIX',
     'Programming Language :: Python',
     'Programming Language :: Python :: 2.7',

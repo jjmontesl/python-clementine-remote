@@ -1,3 +1,23 @@
+/* This file is part of Clementine.
+   Copyright 2017, David Sansome <me@davidsansome.com>
+   Copyright 2017, Andreas Muttscheller <asfa194@gmail.com>
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+// Note: this file is licensed under the Apache License instead of GPL, so
+// 3rd party applications or libraries can use another license besides GPL.
+
 package pb.remote;
 
 // The supported message types
@@ -189,7 +209,7 @@ message ResponsePlaylists {
 // A list of songs in a playlist
 message ResponsePlaylistSongs {
   optional Playlist requested_playlist = 1;
-  
+
   // The songs that are in the playlist
   repeated SongMetadata songs = 2;
 }
@@ -200,7 +220,7 @@ message ResponseEngineStateChanged {
 }
 
 // Sends the current position of the track
-message ResponseUpdateTrackPosition {  
+message ResponseUpdateTrackPosition {
   optional int32 position = 1;
 }
 
@@ -359,10 +379,10 @@ message Message {
   optional RequestDownloadSongs request_download_songs = 31;
   optional RequestRateSong request_rate_song = 35;
   optional RequestGlobalSearch request_global_search = 37;
-  
+
   optional Repeat repeat = 13;
   optional Shuffle shuffle = 14;
-  
+
   optional ResponseClementineInfo response_clementine_info = 15;
   optional ResponseCurrentMetadata response_current_metadata = 16;
   optional ResponsePlaylists response_playlists = 17;
