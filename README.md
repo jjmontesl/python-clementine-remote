@@ -45,11 +45,11 @@ Usage from Python
 
 Import the Clementine class:
 
-    >>> from clementineremote import Clementine
+    >>> from clementineremote import ClementineRemote
 
 Create an instance (by default will connect to localhost:5500):
 
-    >>> clementine = Clementine(auth_code=1234)
+    >>> clementine = ClementineRemote(auth_code=1234)
     ...
 
 You can query the player status. Note that some attributes will be None until
@@ -73,8 +73,33 @@ Usage as command line tool
 
 After installing, run `clementine-remote --help` for help:
 
-    usage: ...
-          --version             show program's version number and exit
+    usage: clementine-remote [-h] [-s HOST] [-p PORT] [-a AUTH_CODE] [--version]
+                         [command [command ...]]
+
+        Commands:
+                status      Show player status
+                listen      Listen and show messages (stop with CTRL-C)
+                play        Play
+                stop        Stop
+                pause       Pause
+                playpause   Play / Pause
+                next        Next track
+                previous    Previous track
+                set_volume  Set player volume (0-100)
+
+    Client for the Clementine Music Player remote protocol.
+
+    positional arguments:
+      command               command
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -s HOST, --host HOST  clementine player remote hostname (default: localhost)
+      -p PORT, --port PORT  clementine player remote port (default: 5500)
+      -a AUTH_CODE, --auth AUTH_CODE
+                            auth code (if needed)
+      --version             show program's version number and exit
+
 
 
 Configuring Clementine to allow remote connections
