@@ -26,7 +26,7 @@ Note that you need to configure your Clementine Player to accept network connect
 How to install
 ==============
 
-    1. pip install python-clementine-remote (not yet available)
+    1. pip install python-clementine-remote
     2. git clone http://github.com/jjmontesl/python-clementine-remote
         a. cd python-clementine-remote
         b. python setup.py
