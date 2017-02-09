@@ -20,17 +20,17 @@ def main():
 
     parser.prog = "clementine-remote"
 
-    parser.epilog = """
-        Commands:
+    parser.usage = parser.format_usage()[7: ] + '''
+    Commands:
             status      Show player status
+            listen      Listen and show messages (stop with CTRL-C)
             play        Play
             stop        Stop
             pause       Pause
             playpause   Play / Pause
             next        Next track
             previous    Previous track
-            set_volume  Set player volume (0-100)
-    """
+            set_volume  Set player volume (0-100) '''
 
     args = parser.parse_args()
 
@@ -86,8 +86,7 @@ def main():
 
     else:
         parser.print_usage()
-        print(parser.epilog)
-        print("Unknown command: %s\n" % command)
+        print("\nUnknown command: %s\n" % command)
 
     clementine.disconnect()
 

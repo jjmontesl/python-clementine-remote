@@ -76,9 +76,10 @@ class ClementineRemote():
         msg.version = self.PROTOCOL_VERSION
         serialized = msg.SerializeToString()
         data = struct.pack(">I", len(serialized)) + serialized
+
+        #print("Sending message: %s" % msg)
         self.socket.send(data)
 
-        print("Sending message: %s" % msg)
 
     def connect(self):
         """
@@ -157,7 +158,7 @@ class ClementineRemote():
         msg.type = cr.PREVIOUS
         self.send_message(msg)
 
-    def set_volume(self, volume):
+    def volume(self, volume):
         """
         Sets player volume (note, this does not change host computer main volume).
         """
