@@ -2,8 +2,9 @@
 #
 
 import argparse
-from clementine import ClementineRemote
 import time
+
+from clementineremote import ClementineRemote
 
 
 def main():

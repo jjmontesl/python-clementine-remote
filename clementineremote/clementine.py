@@ -1,10 +1,11 @@
 import time
 import socket
-import remotecontrolmessages_pb2 as cr
 import struct
 from threading import Thread
 import random
 import datetime
+
+import clementineremote.remotecontrolmessages_pb2 as cr
 
 
 class ClementineRemote():
