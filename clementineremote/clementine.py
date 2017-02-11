@@ -33,8 +33,11 @@ class ClementineRemote():
     #: Protocol version used by this version of the library
     PROTOCOL_VERSION = 21
 
+    #: Amount of delay between reconnetion attempts
+    RECONNECT_SECONDS = 15
 
-    def __init__(self, host="127.0.0.1", port=5500, auth_code=None, connect=True):
+
+    def __init__(self, host="127.0.0.1", port=5500, auth_code=None, reconnect=False):
 
         self.host = host
         self.port = port
@@ -46,8 +49,8 @@ class ClementineRemote():
         #: Clementine version.
         self.version = None
 
-        #: Current player state ("Playing", "Stopped").
-        self.state = None
+        #: Current player state ("Disconnected", "Playing", "Paused").
+        self.state = "Disconnected"
 
         #: Current volume (0-100).
         self.volume = None
@@ -70,8 +73,14 @@ class ClementineRemote():
         #: Time of the last processed incoming message.
         self.last_update = None
 
-        if connect:
-            self.connect()
+        # Terminate client if in reconnect mode
+        self._terminated = False
+
+        self._reconnect = reconnect
+
+        # Start thread
+        self.thread = Thread(target=self.client_thread, name="ClementineRemote")
+        self.thread.start()
 
 
     def __str__(self):
@@ -84,32 +93,28 @@ class ClementineRemote():
         Internal method used to send messages through Clementine remote network protocol.
         """
 
-        if self.socket is None:
-            raise Exception("Clementine remote cannot send message: connection not initialized.")
+        if self.socket is not None:
 
-        msg.version = self.PROTOCOL_VERSION
-        serialized = msg.SerializeToString()
-        data = struct.pack(">I", len(serialized)) + serialized
+            msg.version = self.PROTOCOL_VERSION
+            serialized = msg.SerializeToString()
+            data = struct.pack(">I", len(serialized)) + serialized
 
-        #print("Sending message: %s" % msg)
-        self.socket.send(data)
+            #print("Sending message: %s" % msg)
+            try:
+                self.socket.send(data)
+            except Exception as e:
+                #self.state = "Disconnected"
+                pass
 
 
-    def connect(self):
+    def _connect(self):
         """
         Connects to the server defined in the constructor.
         """
 
-        if self.socket is not None:
-            raise Exception("This ClementinRemote instance 'connect' method has already been called.")
-
+        self.first_data_sent_complete = False
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.host, self.port))
-
-        self.first_data_sent_complete = False
-
-        self.thread = Thread(target=self.client_thread, name="ClementineRemote")
-        self.thread.start()
 
         msg = cr.Message()
         msg.type = cr.CONNECT
@@ -122,7 +127,10 @@ class ClementineRemote():
 
     def disconnect(self):
         socket = self.socket
-        socket.close()
+        self._terminated = True
+        self.state = "Disconnected"
+        if socket:
+            socket.close()
 
     def play(self):
         """
@@ -191,33 +199,46 @@ class ClementineRemote():
 
     def client_thread(self):
 
-        try:
-            while self.socket:
+        while not self._terminated:
 
-                chunk = self.socket.recv(4)
-                if not chunk: break
-
-                (msg_length, ) = struct.unpack(">I", chunk)
-
-                data = bytes()
-                while len(data) < msg_length:
-                    chunk = self.socket.recv(min(4096, msg_length - len(data)))
-                    if not chunk: break
-                    data += chunk
-
-                if not chunk: break
-
-                try:
-                    msg = cr.Message()
-                    msg.ParseFromString(data)
-
-                    self.process_incoming_message(msg)
-                    self.on_message(msg)
-                except Exception as e:
+            try:
+                self._connect()
+            except Exception as e:
+                if self._reconnect:
+                    time.sleep(self.RECONNECT_SECONDS)
+                else:
                     raise
 
-        except OSError as e:
-            pass
+            try:
+                while self.socket:
+
+                    chunk = self.socket.recv(4)
+                    if not chunk: break
+
+                    (msg_length, ) = struct.unpack(">I", chunk)
+
+                    data = bytes()
+                    while len(data) < msg_length:
+                        chunk = self.socket.recv(min(4096, msg_length - len(data)))
+                        if not chunk: break
+                        data += chunk
+
+                    if not chunk: break
+
+                    try:
+                        msg = cr.Message()
+                        msg.ParseFromString(data)
+
+                        self.process_incoming_message(msg)
+                        self.on_message(msg)
+                    except Exception as e:
+                        raise
+
+            except OSError as e:
+                self.state = "Disconnected"
+
+            if not self._reconnect:
+                break
 
 
     def process_incoming_message(self, msg):

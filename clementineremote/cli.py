@@ -31,6 +31,7 @@ def main():
     parser.add_argument('-s', '--host', dest='host', action='store', type=str, default="127.0.0.1", help='clementine player remote hostname (default: localhost)')
     parser.add_argument('-p', '--port', dest='port', action='store', type=int, default=5500, help='clementine player remote port (default: 5500)')
     parser.add_argument('-a', '--auth', dest='auth_code', action='store', type=int, default=None, help='auth code (if needed)')
+    parser.add_argument('-r', '--reconnect', dest='reconnect', action='store_true', default=False, help='try to reconnect')
 
     parser.add_argument('--version', action='version', version='%(prog)s 1.0.0')
 
@@ -54,22 +55,22 @@ def main():
         parser.print_usage()
         return
 
-    clementine = ClementineRemote(host=args.host, port=args.port, auth_code=args.auth_code)
+    clementine = ClementineRemote(host=args.host, port=args.port, auth_code=args.auth_code, reconnect=args.reconnect)
+
+    for i in range(10):
+        if clementine.first_data_sent_complete:
+            break
+        time.sleep(0.25)
 
     command = args.command[0].lower()
-
     if command == "status":
-        for i in range(10):
-            if clementine.first_data_sent_complete:
-                break
-            time.sleep(0.25)
 
         print(clementine)
 
     elif command == "listen":
         clementine.on_message = print
         try:
-            while clementine.socket:
+            while not clementine._terminated:
                 time.sleep(2.0)
         except KeyboardInterrupt as e:
             print("\nInterrupted by user.")
