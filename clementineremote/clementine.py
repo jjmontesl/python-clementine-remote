@@ -24,6 +24,11 @@ import clementineremote.remotecontrolmessages_pb2 as cr
 class ClementineRemote():
     """
     Attributes may be None if no information has yet been received from the server.
+    This is particularly important if you try to query data immediately after connect:
+    data will not be immediately available.
+
+    You can set the `reconnect` attribute to `True` to get a reconnecting client.
+    When the client is not connected, the state will be `Disconnected`.
 
     If you wish to listen to incoming events, extend this class and override the
     'on_message' method. Messages are protobuf objects, please check the source code
@@ -73,10 +78,11 @@ class ClementineRemote():
         #: Time of the last processed incoming message.
         self.last_update = None
 
+        #: Reconnect mode
+        self.reconnect = reconnect
+
         # Terminate client if in reconnect mode
         self._terminated = False
-
-        self._reconnect = reconnect
 
         # Start thread
         self.thread = Thread(target=self.client_thread, name="ClementineRemote")
@@ -204,9 +210,10 @@ class ClementineRemote():
             try:
                 self._connect()
             except Exception as e:
-                if self._reconnect:
+                if self.reconnect:
                     time.sleep(self.RECONNECT_SECONDS)
                 else:
+                    self._terminated = True
                     raise
 
             try:
@@ -237,8 +244,8 @@ class ClementineRemote():
             except OSError as e:
                 self.state = "Disconnected"
 
-            if not self._reconnect:
-                break
+            if not self.reconnect:
+                self._terminated = True
 
 
     def process_incoming_message(self, msg):

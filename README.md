@@ -55,8 +55,8 @@ Use the `host` and `port` arguments to specify a particular host:
 
     >>> clementine = ClementineRemote(host="127.0.0.1", port=5500, auth_code=None)
 
-You can query the player status. Note that some attributes will be None until
-information is received.
+You can query the player status. Note that **some attributes will be None until information is received**,
+also, calls issued before the connection is established will silently fail.
 
     >>> clementine.first_data_sent_complete
     True
