@@ -19,7 +19,7 @@ install_requires = ['protobuf']  # 3.2.0
 classifiers = [
     'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
-    'License :: OSI Approved :: Apache Software License, Version 2.0',
+    'License :: OSI Approved :: Apache Software License',
     'Operating System :: POSIX',
     'Programming Language :: Python',
     'Programming Language :: Python :: 2.7',
