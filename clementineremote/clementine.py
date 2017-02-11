@@ -209,6 +209,15 @@ class ClementineRemote():
         msg.request_open_playlist.playlist_id = playlist_id
         self.send_message(msg)
 
+    def change_song(self, playlist_id, song_index):
+        """
+        """
+        msg = cr.Message()
+        msg.type = cr.CHANGE_SONG
+        msg.request_change_song.playlist_id = playlist_id
+        msg.request_change_song.song_index = song_index
+        self.send_message(msg)
+
     def client_thread(self):
 
         while not self._terminated:

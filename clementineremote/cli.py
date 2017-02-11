@@ -47,7 +47,9 @@ def main():
             playpause   Play / Pause
             next        Next track
             previous    Previous track
-            set_volume  Set player volume (0-100) '''
+            set_volume  Set player volume (0-100)
+            playlist_open <playlist>        Open playlist
+            change_song <playlist, index>   Play song in playlist'''
 
     args = parser.parse_args()
 
@@ -64,8 +66,9 @@ def main():
 
     command = args.command[0].lower()
     if command == "status":
-
         print(clementine)
+        print("Playlists:")
+        print("\n".join([str(p) for p in clementine.playlists.values()]))
 
     elif command == "listen":
         clementine.on_message = print
@@ -100,6 +103,9 @@ def main():
     elif command == "playlist_open":
         playlist = int(args.command[1])
         clementine.playlist_open(playlist)
+
+    elif command == "change_song":
+        clementine.change_song(int(args.command[1]), int(args.command[2]))
 
     else:
         parser.print_usage()
