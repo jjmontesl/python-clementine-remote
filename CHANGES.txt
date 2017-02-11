@@ -1,5 +1,6 @@
 [1.0.1]
 
+    * Added playlist support.
     * Added reconnect support.
 
 [1.0.0]

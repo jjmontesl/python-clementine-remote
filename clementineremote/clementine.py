@@ -72,6 +72,12 @@ class ClementineRemote():
         #: Repeat mode.
         self.repeat = None
 
+        #: Playlists
+        self.playlists = {}
+
+        #: Active playlist
+        self.active_playlist_id = None
+
         #: Indicates if initial data has already been received.
         self.first_data_sent_complete = None
 
@@ -305,16 +311,30 @@ class ClementineRemote():
             self.first_data_sent_complete = True
 
         elif msg.type == cr.PLAYLISTS:
-            # Ignoring
-            pass
+            playlists = {}
+            for playlist in msg.response_playlists.playlist:
+                pl = {
+                    "id": playlist.id,
+                    "name": playlist.name,
+                    "item_count": playlist.item_count,
+                    "active": playlist.active,
+                    "closed": playlist.closed
+                }
+                playlists[pl["id"]] = pl
+
+                if pl["active"]:
+                    self.active_playlist_id = pl["id"]
+
+            self.playlists = playlists
+
 
         elif msg.type == cr.PLAYLIST_SONGS:
             # Ignoring
             pass
 
         elif msg.type == cr.ACTIVE_PLAYLIST_CHANGED:
-            # Ignoring
-            pass
+            pl_id = msg.response_active_changed.id
+            self.active_playlist_id = pl_id
 
         elif msg.type == cr.KEEP_ALIVE:
             # Last msg date will be updated for any incoming message
