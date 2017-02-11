@@ -47,7 +47,7 @@ def main():
             playpause   Play / Pause
             next        Next track
             previous    Previous track
-            set_volume  Set player volume (0-100)
+            set_volume <volume>             Set player volume (0-100)
             playlist_open <playlist>        Open playlist
             change_song <playlist, index>   Play song in playlist'''
 
