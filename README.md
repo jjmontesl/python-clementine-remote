@@ -51,6 +51,10 @@ Create an instance (by default this will connect to localhost:5500):
 
     >>> clementine = ClementineRemote(auth_code=1234)
 
+Alternatiuvely, you can create a instance that will try to reconnect automatically:
+
+    >>> clementine = ClementineRemote(host="127.0.0.1", reconnect=True)
+
 Use the `host` and `port` arguments to specify a particular host:
 
     >>> clementine = ClementineRemote(host="127.0.0.1", port=5500, auth_code=None)
@@ -91,8 +95,9 @@ Usage as command line tool
 
 After installing, run `clementine-remote --help` for help:
 
-    usage: clementine-remote [-h] [-s HOST] [-p PORT] [-a AUTH_CODE] [--version]
-                         [command [command ...]]
+    usage: clementine-remote [-h] [-s HOST] [-p PORT] [-a AUTH_CODE] [-r]
+                             [--version]
+                             [command [command ...]]
 
         Commands:
                 status      Show player status
@@ -103,7 +108,9 @@ After installing, run `clementine-remote --help` for help:
                 playpause   Play / Pause
                 next        Next track
                 previous    Previous track
-                set_volume  Set player volume (0-100)
+                set_volume <volume>             Set player volume (0-100)
+                playlist_open <playlist>        Open playlist
+                change_song <playlist, index>   Play song in playlist
 
     Client for the Clementine Music Player remote protocol.
 
@@ -116,6 +123,7 @@ After installing, run `clementine-remote --help` for help:
       -p PORT, --port PORT  clementine player remote port (default: 5500)
       -a AUTH_CODE, --auth AUTH_CODE
                             auth code (if needed)
+      -r, --reconnect       try to reconnect
       --version             show program's version number and exit
 
 

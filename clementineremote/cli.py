@@ -19,7 +19,7 @@
 import argparse
 import time
 
-from clementineremote import ClementineRemote
+from clementineremote import ClementineRemote, __version__
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
     parser.add_argument('-a', '--auth', dest='auth_code', action='store', type=int, default=None, help='auth code (if needed)')
     parser.add_argument('-r', '--reconnect', dest='reconnect', action='store_true', default=False, help='try to reconnect')
 
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0.0')
+    parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
 
     parser.prog = "clementine-remote"
 
