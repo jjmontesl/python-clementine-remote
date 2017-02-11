@@ -11,8 +11,9 @@ Clementine remote protocol provides functionality including:
 * Play / Pause / Stop / Next / Previous actions
 * Continuous track position information
 * Volume control
-* Playlist management (not implemented)
-* Access to song metadata, album art and lyrics
+* Song metadata, album art
+* Playlist management
+* Other: lyrics, download (not yet implemented)
 
 Note that you need to configure your Clementine Player to accept network connections.
 
