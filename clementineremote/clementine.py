@@ -258,6 +258,8 @@ class ClementineRemote():
 
             except OSError as e:
                 self.state = "Disconnected"
+            except Exception as e:
+                self.state = "Disconnected"
 
             if not self.reconnect:
                 self._terminated = True
