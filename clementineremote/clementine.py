@@ -218,6 +218,18 @@ class ClementineRemote():
         msg.request_change_song.song_index = song_index
         self.send_message(msg)
 
+    def insert_urls(self, playlist_id, urls, position=-1, play_now=False, enqueue=False):
+        """
+        """
+        msg = cr.Message()
+        msg.type = cr.INSERT_URLS
+        msg.request_insert_urls.playlist_id = playlist_id
+        msg.request_insert_urls.urls.extend(urls)
+        msg.request_insert_urls.position = position
+        msg.request_insert_urls.play_now = play_now
+        msg.request_insert_urls.enqueue = enqueue
+        self.send_message(msg)
+
     def client_thread(self):
 
         while not self._terminated:

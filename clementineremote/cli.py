@@ -49,6 +49,7 @@ def main():
             previous    Previous track
             set_volume <volume>             Set player volume (0-100)
             playlist_open <playlist>        Open playlist
+            insert_urls <playlist> <position> <playnow> <enqueue> <url> ...  Insert urls
             change_song <playlist, index>   Play song in playlist'''
 
     args = parser.parse_args()
@@ -106,6 +107,9 @@ def main():
 
     elif command == "change_song":
         clementine.change_song(int(args.command[1]), int(args.command[2]))
+
+    elif command == "insert_urls": # may need playlist_open args.command[1] first
+        clementine.insert_urls(int(args.command[1]), args.command[5:], int(args.command[2]), bool(args.command[3]), bool(args.command[4]))
 
     else:
         parser.print_usage()

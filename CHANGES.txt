@@ -1,3 +1,7 @@
+[1.0.3]
+
+    * Added insert_urls support.
+
 [1.0.2]
 
     * Fixed compatibility bug with Python 2.7.
