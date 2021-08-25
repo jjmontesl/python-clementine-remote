@@ -162,7 +162,7 @@ You can collaborate:
 * If you fix bugs, please do send a pull request.
 * If you make reusable changes, please document those and send a pull request.
 
-You can get in touch via email or Twitter: @jjmontesl .
+You can get in touch via email or Twitter: @jjmontes .
 
 
 License
